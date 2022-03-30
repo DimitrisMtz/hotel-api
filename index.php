@@ -6,10 +6,11 @@
     
     $CONFIG = require_once(__DIR__ . "/config.php");
     define("CONFIG", $CONFIG);
-
+    ini_set('display_errors', '0');
     require_once(__DIR__ . "/vendor/autoload.php");
     require_once(__DIR__ . "/class/Room.php");
     require_once(__DIR__ . "/class/Database.php");
+    require_once(__DIR__ . "/class/Helper.php");
 
     $APP = new Slim\App([
         'settings' => CONFIG["slim"]

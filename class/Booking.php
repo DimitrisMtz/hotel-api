@@ -6,16 +6,16 @@ class Booking{
         $this->db = Database::$db;
     }
     
-    public function getBookings($start, $stop){
+    public function getBookings($checkIn, $checkOut){
         $query = $this->db->prepare(
             "SELECT *
             FROM booking AS B
-            WHERE :start BETWEEN B.start_time AND B.stop_time
-            OR :stop BETWEEN B.start_time AND B.stop_time"
+            WHERE :checkIn BETWEEN B.check_in AND B.check_out
+            OR :checkOut BETWEEN B.check_in AND B.check_out"
         );
         $query->execute([
-            ":start" => $start,
-            ":stop" => $stop
+            ":checkIn" => $checkIn,
+            ":checkOut" => $checkOut
         ]);
         $data = $query->fetchAll();
         var_dump($data);die();

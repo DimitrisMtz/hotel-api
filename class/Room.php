@@ -7,20 +7,20 @@
             $this->db = Database::$db;
         }
         
-        public function getVacantRooms($start, $stop){
+        public function getVacantRooms($checkIn, $checkOut){
             $query = $this->db->prepare(
                 "SELECT *
                 FROM room AS R
                 WHERE R.id NOT IN (	
                     SELECT B.room_id
                     FROM booking AS B
-                    WHERE :start BETWEEN B.start_time AND B.stop_time
-                    OR :stop BETWEEN B.start_time AND B.stop_time
+                    WHERE :checkIn BETWEEN B.check_in AND B.check_out
+                    OR :checkOut BETWEEN B.check_in AND B.check_out
                 )"
             );
             $query->execute([
-                ":start" => $start,
-                ":stop" => $stop
+                ":checkIn" => $checkIn,
+                ":checkOut" => $checkOut
             ]);
             $data = $query->fetchAll();
             return $data;
