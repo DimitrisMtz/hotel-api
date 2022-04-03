@@ -1,29 +1,23 @@
 <?php
     class Room{
-        private $vacantRooms;
-        private $type;
-        private $db;
-        public function __construct(){
-            $this->db = Database::$db;
-        }
-        
         public function getVacantRooms($checkIn, $checkOut){
-            $query = $this->db->prepare(
-                "SELECT *
-                FROM room AS R
-                WHERE R.id NOT IN (	
-                    SELECT B.room_id
-                    FROM booking AS B
-                    WHERE :checkIn BETWEEN B.check_in AND B.check_out
-                    OR :checkOut BETWEEN B.check_in AND B.check_out
-                )"
+            $query = Database::$db->prepare(
+                "SELECT 
+                    id,
+                    type
+                FROM room
+                WHERE hotel_id = 1"
             );
-            $query->execute([
-                ":checkIn" => $checkIn,
-                ":checkOut" => $checkOut
-            ]);
-            $data = $query->fetchAll();
-            return $data;
+            $query->execute();
+            $rooms = $query->fetchAll();
+            $bookings = Booking::getAllBookingsInRange($checkIn, $checkOut);
+            $dates = Utilities::getDatesFromRange($checkIn, $checkOut);
+            $vacantRooms = [];
+            foreach($dates as $date){
+                $result = Utilities::dateInRangeOfBookings($date, $bookings);
+                $vacantRooms[] = Utilities::createResponseString($date, $rooms, $result);
+            }
+            return $vacantRooms;
         }
     }
 ?>
