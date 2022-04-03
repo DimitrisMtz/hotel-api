@@ -1,18 +1,17 @@
 <?php
     $APP->get("/available/rooms", function($request, $response) {
-        $checkInRaw = $request->getParsedBody()["check_in"];
-        $checkOutRaw = $request->getParsedBody()["check_out"];
-        $checkData = Utilities::genericDataCheck([$checkInRaw, $checkOutRaw], $response);
+        $checkIn = $request->getParsedBody()["check_in"];
+        $checkOut = $request->getParsedBody()["check_out"];
+        $checkData = Utilities::genericDataCheck([$checkIn, $checkOut]);
         if ($checkData === false) {
             return $response->withStatus(400)->write(json_encode([
                 "success" => false,
                 "description" => "Missing data"
             ]));
         }
-        $room = new Room();
-        $checkInTime = Utilities::formatTimestamp($checkInRaw);
-        $checkOutTime = Utilities::formatTimestamp($checkOutRaw);
-        $vacantRooms = $room->getVacantRooms($checkInTime, $checkOutTime);
+        $hotelId = 1;
+        $room = new Room($hotelId);
+        $vacantRooms = $room->getVacantRooms($checkIn, $checkOut);
         return $response->withStatus(200)->write(json_encode([
             "success" => true,
             "description" => "Available rooms retrieved successfully",

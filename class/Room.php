@@ -1,14 +1,20 @@
 <?php
     class Room{
+        public function __construct($hotelId){
+            $this->hotelId = $hotelId;
+        }
+
         public function getVacantRooms($checkIn, $checkOut){
             $query = Database::$db->prepare(
                 "SELECT 
                     id,
                     type
                 FROM room
-                WHERE hotel_id = 1"
+                WHERE hotel_id = :hotel_id"
             );
-            $query->execute();
+            $query->execute([
+                ":hotel_id" => $this->hotelId
+            ]);
             $rooms = $query->fetchAll();
             $bookings = Booking::getAllBookingsInRange($checkIn, $checkOut);
             $dates = Utilities::getDatesFromRange($checkIn, $checkOut);

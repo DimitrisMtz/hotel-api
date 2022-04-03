@@ -1,6 +1,4 @@
 <?php
-    use Slim\App;
-    
     session_cache_expire(43200); // 30 days
     session_start();
     
