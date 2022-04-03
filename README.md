@@ -20,3 +20,8 @@ A simple REST API that returns room availability in a range of dates.
 4) Rename the ```config_template.php``` to ```config.php```
 
 5) Add your Database connection info in ```config.php```
+## Run Locally
+
+```bash
+  php -S localhost:8080
+```
