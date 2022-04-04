@@ -14,7 +14,7 @@ class Utilities{
         $period = new DatePeriod(
             new DateTime($start),
             new DateInterval('P1D'),
-            new DateTime($end)
+            new DateTime($end.'+1 DAY')
         );
         foreach ($period as $key => $value) {
             $dates[] = $value->format('Y-m-d');

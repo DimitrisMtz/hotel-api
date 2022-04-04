@@ -5,7 +5,7 @@ class Booking{
         $query = Database::$db->prepare(
             "SELECT *
             FROM booking AS B
-            WHERE :checkIn <= B.check_in AND :checkOut >= B.check_out"
+            WHERE :checkIn <= B.check_in OR :checkOut >= B.check_out"
         );
         $query->execute([
             ":checkIn" => $checkIn,
